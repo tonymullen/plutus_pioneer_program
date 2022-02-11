@@ -71,7 +71,6 @@ data GiveParams = GiveParams
     { gpBeneficiary :: !PaymentPubKeyHash
     , gpDeadline    :: !POSIXTime
     , gpAmount      :: !Integer
-    } deriving (Generic, ToJSON, FromJSON, ToSchema)
 
 type VestingSchema =
             Endpoint "give" GiveParams
