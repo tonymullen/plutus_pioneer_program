@@ -24,10 +24,11 @@ import           Ledger                 hiding (mint, singleton)
 import           Ledger.Constraints     as Constraints
 import qualified Ledger.Typed.Scripts   as Scripts
 import           Ledger.Value           as Value
-import           Prelude                (IO, Semigroup (..), Show (..), String, undefined)
+import           Prelude                (IO, Semigroup (..), Show (..), String)
 import           Text.Printf            (printf)
 import           Wallet.Emulator.Wallet
 
+{-# LANGUAGE OverloadedStrings #-}
 {-# INLINABLE mkPolicy #-}
 -- Minting policy for an NFT, where the minting transaction must consume the given UTxO as input
 -- and where the TokenName will be the empty ByteString.
@@ -43,8 +44,8 @@ mkPolicy oref () ctx =  traceIfFalse "UTxO not consumed"   hasUTxO           &&
 
     checkMintedAmount :: Bool
     checkMintedAmount = case flattenValue (txInfoMint info) of
-        [(_, emptyTn, amt)]  -> amt == 1
-        _               -> False
+        [(_, _, amt)]       -> amt == 1
+        _                   -> False
 
 emptyTn :: TokenName
 emptyTn = Value.tokenName $ fromBuiltin emptyByteString
